@@ -11,7 +11,24 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 # Get token from environment variable - safer than pasting directly in code
 TOKEN = os.getenv("8308393313:AAG5GQKaFntuwx77zaTNBMKarkciAao1YhY")
 if not TOKEN:
-    raise RuntimeError("8308393313:AAG5GQKaFntuwx77zaTNBMKarkciAao1YhY")
+    import os
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+
+# Get token from environment variable
+TOKEN = os.environ.get("8308393313:AAG5GQKaFntuwx77zaTNBMKarkciAao1YhY")
+
+if not TOKEN:
+    raise RuntimeError("8308393313:AAG5GQKaFntuwx77zaTNBMKarkciAao1YhY. 8308393313:AAG5GQKaFntuwx77zaTNBMKarkciAao1YhY in Render environment.")
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("🎡 Welcome to Spin Wheel Bot!")
+
+app = ApplicationBuilder().token(TOKEN).build()
+app.add_handler(CommandHandler("start", start))
+
+print("✅ Bot started successfully...")
+app.run_polling()
 
 # --- Database setup (sqlite) ---
 conn = sqlite3.connect("data.db", check_same_thread=False)
